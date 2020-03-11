@@ -2,18 +2,18 @@ package kr.co.fastcampus.eatgo.interfaces;
 
 import kr.co.fastcampus.eatgo.domain.Restaurant;
 import kr.co.fastcampus.eatgo.domain.RestaurantRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class RestaurantController {
 
-    private RestaurantRepository repository = new RestaurantRepository();
+    @Autowired     //컨트롤러를 만들어 줄떄 스프링이 알아서 레스토랑레퍼지토를 알아서 생성해서 넣어준다.
+    private RestaurantRepository repository;
 
     @GetMapping("/restaurants")
     public List<Restaurant> list() {

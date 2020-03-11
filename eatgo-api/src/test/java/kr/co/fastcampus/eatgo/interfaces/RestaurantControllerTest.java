@@ -1,9 +1,12 @@
 package kr.co.fastcampus.eatgo.interfaces;
 
+import kr.co.fastcampus.eatgo.domain.RestaurantRepository;
+import kr.co.fastcampus.eatgo.domain.RestaurantRepositoryImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -21,10 +24,14 @@ public class RestaurantControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    @SpyBean(RestaurantRepositoryImpl.class)  //사용한 레퍼지토리 사용하겠다고 주입해주는 것이다. 어떤것을 구현할 것인지 적어줘야한다.
+    private RestaurantRepository restaurantRepository;
+
     @Test
     public void list() throws Exception {
         mvc.perform (get("/restaurants"))
                 .andExpect(status().isOk())
+
                 .andExpect(content().string(
                         containsString("\"id\":1004")
                 ))
