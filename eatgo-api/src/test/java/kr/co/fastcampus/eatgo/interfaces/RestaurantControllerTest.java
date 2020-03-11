@@ -1,5 +1,7 @@
 package kr.co.fastcampus.eatgo.interfaces;
 
+import kr.co.fastcampus.eatgo.domain.MenuItemRepository;
+import kr.co.fastcampus.eatgo.domain.MenuItemRepositoryImpl;
 import kr.co.fastcampus.eatgo.domain.RestaurantRepository;
 import kr.co.fastcampus.eatgo.domain.RestaurantRepositoryImpl;
 import org.junit.Test;
@@ -27,6 +29,9 @@ public class RestaurantControllerTest {
     @SpyBean(RestaurantRepositoryImpl.class)  //사용한 레퍼지토리 사용하겠다고 주입해주는 것이다. 어떤것을 구현할 것인지 적어줘야한다.
     private RestaurantRepository restaurantRepository;
 
+    @SpyBean(MenuItemRepositoryImpl.class)
+    private MenuItemRepository menuItemRepository;
+
     @Test
     public void list() throws Exception {
         mvc.perform (get("/restaurants"))
@@ -49,7 +54,10 @@ public class RestaurantControllerTest {
                 ))
                 .andExpect((ResultMatcher) content().string(
                         containsString("\"name\":\"Bob zip\"")
-                ));
+                ))
+        .andExpect(content().string(
+                containsString("Kimchi")
+        ));
 
         mvc.perform(get("/restaurants/2020"))
                 .andExpect(status().isOk())
