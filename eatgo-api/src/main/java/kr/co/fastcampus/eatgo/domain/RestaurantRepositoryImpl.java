@@ -27,4 +27,11 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
                 .findFirst()
                 .orElse(null);  //찾을 수 없는 경우까지 만들 때 이용( 필요 없을 시 .get()으로 한다)
     }
+
+    @Override
+    public Restaurant save(Restaurant restaurant) {
+        restaurant.setId(1234);
+        restaurants.add(restaurant);
+        return restaurant;
+    }
 }
