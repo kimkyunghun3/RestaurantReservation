@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -16,11 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.core.StringContains.containsString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class) //스프링 이용하여 테스트 실행하도록 설정
 @WebMvcTest(RestaurantController.class)   //restuarnat 컨트롤럴 실행한다고 명시해줄 수 있따.
@@ -88,5 +91,21 @@ public class RestaurantControllerTest {
                 .andExpect((ResultMatcher) content().string(
                         containsString("\"name\":\"Cyber Food\"")
                 ));
+    }
+
+
+    @Test
+    public void create() throws Exception {
+//        Restaurant restaurant = new Restaurant(1234L,"BeRyong","Seoul");
+
+
+        mvc.perform(post("/restaurants")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"Beryong\",\"address\":\"Busan\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("location","/restaurants/1234"))
+                .andExpect(content().string("{}"));
+
+        verify(restaurantService).addRestaurant(any());  //any는 어떤 객체를 넣어도 실행하게 된다(실행되는지 확인할 떄 사용)
     }
 }
