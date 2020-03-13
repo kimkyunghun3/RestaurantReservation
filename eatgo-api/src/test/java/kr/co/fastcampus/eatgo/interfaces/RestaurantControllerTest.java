@@ -103,7 +103,7 @@ public class RestaurantControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"Beryong\",\"address\":\"Busan\"}"))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("location","/restaurants/null"))
+                .andExpect(header().string("location","/restaurants/1234"))
                 .andExpect(content().string("{}"));
 
         verify(restaurantService).addRestaurant(any());  //any는 어떤 객체를 넣어도 실행하게 된다(실행되는지 확인할 떄 사용)
