@@ -49,7 +49,7 @@ public class RestaurantController {
         String name = resource.getName();
         String address = resource.getAddress();
 
-        Restaurant restaurant = new Restaurant(1234L,"BeRyong","Busan");
+        Restaurant restaurant = new Restaurant("BeRyong","Busan");
         restaurantService.addRestaurant(restaurant);
         URI location = new URI("/restaurants/" +restaurant.getId());
         return ResponseEntity.created(location).body("{}");
