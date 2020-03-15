@@ -113,7 +113,7 @@ public class RestaurantControllerTest {
 
 
     @Test
-    public void create() throws Exception {
+    public void createWithValidData() throws Exception {
         given(restaurantService.addRestaurant(any())).will(invocation -> {
             Restaurant restaurant = invocation.getArgument(0);
             return Restaurant.builder()
@@ -131,13 +131,29 @@ public class RestaurantControllerTest {
 
         verify(restaurantService).addRestaurant(any());  //any는 어떤 객체를 넣어도 실행하게 된다(실행되는지 확인할 떄 사용)
     }
+
     @Test
-    public void update() throws Exception{
+    public void createWithInvalidData() throws Exception {
+        mvc.perform(post("/restaurants")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"\",\"address\":\"\"}"))
+                .andExpect(status().isBadRequest());
+    }
+    @Test
+    public void updateWithValidData() throws Exception{
         mvc.perform(patch("/restaurants/1004")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"JOKER Bar\",\"address\":\"Busan\"}"))
                 .andExpect(status().isOk());
 
         verify(restaurantService).updateRestaurant(1004L,"JOKER Bar","Busan");
+    }
+    @Test
+    public void updateWithoutName() throws Exception{
+        mvc.perform(patch("/restaurants/1004")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"\",\"address\":\"Busan\"}"))
+                .andExpect(status().isBadRequest());
+
     }
 }
