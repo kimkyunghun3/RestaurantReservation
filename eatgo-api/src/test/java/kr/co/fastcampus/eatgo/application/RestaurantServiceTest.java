@@ -74,7 +74,7 @@ public class RestaurantServiceTest {
 
 
     @Test
-    public void getRestaurant() {
+    public void getRestaurantWithExisted() {
         Restaurant restaurant =restaurantService.getRestaurant(1004L);
 
         assertThat(restaurant.getId(), is(1004L));
@@ -82,6 +82,10 @@ public class RestaurantServiceTest {
         MenuItem menuItem =restaurant.getMenuItems().get(0);
 
         assertThat(menuItem.getName(), is("Kimchi"));
+    }
+    @Test(expected = RestaurantNotFoundException.class)  //예외가 발생하는 걸 처리하기 위해서 이렇게 써야 한다.
+    public void getRestaurantNotWithExisted() {
+        restaurantService.getRestaurant(404L);
     }
 
     @Test
