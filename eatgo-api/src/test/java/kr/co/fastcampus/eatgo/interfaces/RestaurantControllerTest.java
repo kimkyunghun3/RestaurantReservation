@@ -46,6 +46,7 @@ public class RestaurantControllerTest {
     @Test
     public void list() throws Exception {
         List<Restaurant> restaurants = new ArrayList<>();
+
         restaurants.add(new Restaurant(1004L, "JOKER House", "Seoul"));
         given(restaurantService.getRestaurants()).willReturn(restaurants);
 
