@@ -1,5 +1,6 @@
 package kr.co.fastcampus.eatgo.application;
 
+import ch.qos.logback.core.pattern.util.RegularEscapeUtil;
 import kr.co.fastcampus.eatgo.domain.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +48,7 @@ public class RestaurantServiceTest {
                 .id(1004L)
                 .name("Bob zip")
                 .address("Seoul")
-                .menuItems(new ArrayList<MenuItem>())
+
                 .build();
         restaurants.add(restaurant);
         given(restaurantRepository.findAll()).willReturn(restaurants);
@@ -58,7 +59,9 @@ public class RestaurantServiceTest {
     }
     private void mockMenuItemRepository() {
         List<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new MenuItem("Kimchi"));
+        menuItems.add(MenuItem.builder()
+                .name("Kimchi")
+                .build());
         given(menuItemRepository.findAllByRestaurantId(1004L)).willReturn(menuItems);
     }
     @Test
@@ -83,10 +86,16 @@ public class RestaurantServiceTest {
 
     @Test
     public void addRestaurant(){
-        Restaurant restaurant = new Restaurant("BeRyong","Busan");
-        Restaurant saved = new Restaurant(1234L,"BeRyong","Busan");
+        given(restaurantRepository.save(any())).will(invocation -> {
+            Restaurant restaurant = invocation.getArgument(0);
+            restaurant.setId(1234L);
+            return restaurant;
+        });
+        Restaurant restaurant = Restaurant.builder()
+                .name("BeRyong")
+                .address("Busan")
+                .build();
 
-        given(restaurantRepository.save(any())).willReturn(saved);
 
         Restaurant created = restaurantService.addRestaurant(restaurant);
 
@@ -95,7 +104,13 @@ public class RestaurantServiceTest {
     }
     @Test
     public void updateRestaurant(){
-        Restaurant restaurant = new Restaurant(1004L,"Bob zip","Seoul");
+        Restaurant restaurant = Restaurant.builder()
+                .id(1004L)
+                .name("Bob zip")
+                .address("Seoul")
+                .build();
+
+
 
         given(restaurantRepository.findById(1004L))
                 .willReturn(Optional.of(restaurant));

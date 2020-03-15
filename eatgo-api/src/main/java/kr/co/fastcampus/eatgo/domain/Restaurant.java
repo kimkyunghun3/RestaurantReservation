@@ -19,6 +19,7 @@ public class Restaurant {
 
     @Id
     @GeneratedValue
+    @Setter
     private Long id;
 
 
@@ -26,9 +27,7 @@ public class Restaurant {
 
     private String address;
 
-//    private String regionName;  //Seoul
-//    private String categoryName; //Korean
-//    private String tagNames;  //#JMT
+
 
     @Transient
     private List<MenuItem> menuItems = new ArrayList<MenuItem>();
@@ -36,15 +35,15 @@ public class Restaurant {
 //    public Restaurant() {
 //    }
 
-    public Restaurant(String name, String address) {
-        this.name = name;
-        this.address = address;
-    }
-    public Restaurant(Long id, String name, String address) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-    }
+//    public Restaurant(String name, String address) {
+//        this.name = name;
+//        this.address = address;
+//    }
+//    public Restaurant(Long id, String name, String address) {
+//        this.id = id;
+//        this.name = name;
+//        this.address = address;
+//    }
 
 
 //    public void setId(long id) {
@@ -71,14 +70,15 @@ public class Restaurant {
 //        return menuItems;
 //    }
 
-    public void addMenuItem(MenuItem menuItem) {
-        menuItems.add(menuItem);
-    }
+//    public void addMenuItem(MenuItem menuItem) {
+//
+//        menuItems.add(menuItem);
+//    }
+
 
     public void setMenuItems(List<MenuItem> menuItems) {
-        for (MenuItem menuItem : menuItems){
-            addMenuItem(menuItem);
-        }
+        this.menuItems = new ArrayList<>(menuItems);
+
     }
 
     public void updateInformation(String name, String address) {
