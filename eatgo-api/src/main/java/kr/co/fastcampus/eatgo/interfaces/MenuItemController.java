@@ -19,9 +19,10 @@ public class MenuItemController {
             @PathVariable("restaurantId") Long restaurantId,
             @RequestBody List<MenuItem> menuItems
     ) {
-        menuItemService.bulkUpdate(restaurantId, menuItems);
+        menuItemService.bulkUpate(restaurantId, menuItems);
 
         return "";
     }
 
 }
+
